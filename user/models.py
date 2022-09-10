@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.core.validators import RegexValidator
 
 
 class UserManager(BaseUserManager):
@@ -37,9 +38,6 @@ class User(AbstractBaseUser):
     
     objects = UserManager()
     
-    def __str__(self):
-        return self.username
-
     def has_perm(self, perm, obj=None):
         return True
     
@@ -52,4 +50,34 @@ class User(AbstractBaseUser):
 
 
 class UserInfo(models.Model):
+
+    class Meta:
+        db_table = "userinfos"
+
+    GENDER_CHOICES = (
+        (0, "여성"),
+        (1, "남성")
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField("작가 이름", max_length=16)
+    gender = models.CharField("성별", max_length=4, choices=GENDER_CHOICES)
+    birth = models.DateField("생일")
+    email = models.EmailField("이메일", max_length=80)
+    phoneNumberRegex = RegexValidator(regex = r"^\+?1?\d{8,15}$")
+    phone = models.CharField("연락처", validators = [phoneNumberRegex], max_length = 16, unique = True)
+    create_date = models.DateTimeField(auto_now_add=True)
     
+    is_artist = models.BooleanField(default=False)
+
+
+class ApplyLog(models.Model):
+
+    class Meta:
+        db_table = "approval_log"
+
+    userinfo = models.ForeignKey(UserInfo, on_delete=models.CASCADE)
+    apply_date = models.DateTimeField(auto_now_add=True)
+    examine_date = models.DateField(default=None, null=True)
+
+    is_approval = models.BooleanField(default=None, null=True)
