@@ -63,7 +63,7 @@ class UserInfo(models.Model):
     name = models.CharField("작가 이름", max_length=16)
     gender = models.CharField("성별", max_length=4, choices=GENDER_CHOICES)
     birth = models.DateField("생일")
-    email = models.EmailField("이메일", max_length=80)
+    email = models.EmailField("이메일", max_length=80, unique = True)
     phoneNumberRegex = RegexValidator(regex = r"^\+?1?\d{8,15}$")
     phone = models.CharField("연락처", validators = [phoneNumberRegex], max_length = 16, unique = True)
     create_date = models.DateTimeField(auto_now_add=True)
