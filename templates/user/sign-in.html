@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    로그인
+{% endblock %}
+
+{% block content %}
+
+<div class="row mt-4 mx-auto justify-content-md-center">
+    <div class="col-lg-4">
+        <h1 class="mb-4">로그인</h1>
+        <form method="post" action="/sign-in/">
+            {% csrf_token %}
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
+            <div class="form-floating mb-3">
+                <input name="id" type="text" class="form-control shadow-none" id="floatingInput" placeholder="ID">
+                <label for="floatingInput">ID</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input name="password" type="password" class="form-control shadow-none" id="floatingPassword"
+                    placeholder="Password">
+                <label for="floatingPassword">비밀번호</label>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-outline-info" type="submit">로그인</button>
+                <button class="btn btn-outline-info me-md-2" type="button" onclick="location.href='/sign-up/'">회원가입
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

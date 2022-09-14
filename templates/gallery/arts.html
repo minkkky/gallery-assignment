@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    작품 목록
+{% endblock %}
+
+{% block content %}
+{% load humanize %}
+
+<div class="container mt-4">
+    
+<h1 class="mb-4">작품 목록</h1>
+{% for art in art_list %}
+    <div class="card my-3">
+        <div class="card-header">
+            <h4 class="card-title">{{art.title}}</h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">작가: {{art.artist.name}}</p>
+          <p class="card-text">크기: {{art.size}}호</p>
+          <p class="card-text">가격: {{art.price|intcomma}}원</p>
+        </div>
+      </div>
+{% endfor %}
+
+</div>
+{% endblock %}

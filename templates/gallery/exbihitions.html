@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    전시 목록
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+<h1 class="mb-4">전시 목록</h1>
+{% for exbihition in exbihition_list %}
+    <div class="card my-3">
+        <div class="card-header">
+            <h4 class="card-title">{{exbihition.title}}</h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">작가: {{exbihition.artist.name}}</p>
+          <p class="card-text">전시 기간: {{exbihition.start|date:"Y-m-d"}} ~ {{exbihition.end|date:"Y-m-d"}}</p>
+          <p class="card-text">전시 작품: {{exbihition.arts.all|length}}점
+            <ul>
+                {% for art in exbihition.arts.all %}
+                    <li>{{art.title}}</li>
+                {% endfor %}
+            </ul>
+          </p>
+        </div>
+      </div>
+{% endfor %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    검색 결과
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+<h1>검색 결과</h1>
+{% for artist in userinfo_list %}
+    <hr/>
+    <h5><a href="{% url 'art-list' %}">{{artist.name}} 작가님</a></h5>
+{% endfor %}
+
+</div>
+{% endblock %}

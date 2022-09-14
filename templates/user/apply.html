@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    작가 등록 신청
+{% endblock %}
+
+{% block content %}
+<div class="row mt-4 mx-auto justify-content-md-center">
+    <div class="col-lg-4">
+        <h1 class="mb-4">작가 등록 신청</h1>
+        <form method="post" action="/apply/">
+            {% csrf_token %}
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+
+            <div class="mb-3">
+                <label for="name" class="form-label">이름</label>
+                <input name="name"  type="text" class="form-control shadow-none" placeholder="홍길동">
+              </div>
+              
+              <div class="mb-3">
+                  <label for="email" class="form-label">이메일</label>
+                  <input name="email"  type="email" class="form-control shadow-none" placeholder="id@domain.com">
+                </div>
+
+              <div class="mb-3">
+                  <label for="phone" class="form-label">연락처</label>
+                  {% comment %} <input name="phone"  type="text" class="form-control shadow-none" placeholder="010-1234-1234"> {% endcomment %}
+                  <div class="input-group mb-3">
+                    <input name="phone1" type="text" class="form-control text-center" placeholder="010">
+                    <span class="input-group-text">-</span>
+                    <input name="phone2" type="text" class="form-control text-center" placeholder="1234">
+                    <span class="input-group-text">-</span>
+                    <input name="phone3" type="text" class="form-control text-center" placeholder="5678">
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="birth" class="form-label">생년월일</label>
+                    {% comment %} <input name="birth"  type="text" class="form-control shadow-none" placeholder="2000-01-01"> {% endcomment %}
+                    <div class="input-group mb-3">
+                        <input name="phone1" type="text" class="form-control text-center" placeholder="2002">
+                        <span class="input-group-text">년</span>
+                        <input name="phone2" type="text" class="form-control text-center" placeholder="01">
+                        <span class="input-group-text">월</span>
+                        <input name="phone3" type="text" class="form-control text-center" placeholder="01">
+                        <span class="input-group-text">일</span>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="gender" class="form-label me-4">성별</label>
+                    <div class="form-check form-check-inline">
+                      <input name="gender" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="F">
+                      <label class="form-check-label" for="gender">여성</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input name="gender" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="M">
+                      <label class="form-check-label" for="gender">남성</label>
+                    </div>               
+                  </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-outline-info" type="submit">신청하기</button>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
