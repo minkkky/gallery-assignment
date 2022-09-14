@@ -29,7 +29,8 @@ class User(AbstractBaseUser):
     password = models.CharField("비밀번호", max_length=128)
     join_date = models.DateTimeField("가입일", auto_now_add=True)
 
-    is_active = models.BooleanField(default=True) 
+    is_active = models.BooleanField(default=True)
+    is_artist = models.BooleanField(default=None, null=True)
     is_admin = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'username'
@@ -55,8 +56,8 @@ class UserInfo(models.Model):
         db_table = "userinfos"
 
     GENDER_CHOICES = (
-        (0, "여성"),
-        (1, "남성")
+        ("F", "여성"),
+        ("M", "남성")
     )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -64,11 +65,11 @@ class UserInfo(models.Model):
     gender = models.CharField("성별", max_length=4, choices=GENDER_CHOICES)
     birth = models.DateField("생일")
     email = models.EmailField("이메일", max_length=80, unique = True)
-    phoneNumberRegex = RegexValidator(regex = r"^\+?1?\d{8,15}$")
-    phone = models.CharField("연락처", validators = [phoneNumberRegex], max_length = 16, unique = True)
+    phoneNumberRegex = RegexValidator(regex = r"\d{3}?-?\d{4}?-?\d{4}")
+    phone = models.CharField("연락처", validators = [phoneNumberRegex], max_length = 18, unique = True)
     create_date = models.DateTimeField(auto_now_add=True)
     
-    is_artist = models.BooleanField(default=False)
+    is_artist = models.BooleanField(default=None, null=True)
 
 
 class ApplyLog(models.Model):
