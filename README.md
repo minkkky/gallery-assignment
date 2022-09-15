@@ -32,6 +32,5 @@ Project
 ### ERD
 ![gallery erd 916](https://user-images.githubusercontent.com/104331869/190525676-f551ef49-2cc4-412e-b92c-d53fbb618106.png)
 
-### API
 
 
