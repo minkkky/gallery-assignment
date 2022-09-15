@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    전시 목록
+    INDEX
 {% endblock %}
 
 {% block content %}
@@ -14,15 +14,9 @@
             <h4 class="card-title">{{exbihition.title}}</h4>
         </div>
         <div class="card-body">
-          <p class="card-text">작가: {{exbihition.artist.name}}</p>
-          <p class="card-text">전시 기간: {{exbihition.start|date:"Y-m-d"}} ~ {{exbihition.end|date:"Y-m-d"}}</p>
-          <p class="card-text">전시 작품: {{exbihition.arts.all|length}}점
-            <ul>
-                {% for art in exbihition.arts.all %}
-                    <li>{{art.title}}</li>
-                {% endfor %}
-            </ul>
-          </p>
+          <p class="card-text">작가: {{exbihition.name}}</p>
+          <p class="card-text">전시 기간: {{exbihition.start}} ~ {{exbihition.end}}</p>
+          <p class="card-text">전시 작품: {{exbihition.arts|length}}점</p>
         </div>
       </div>
 {% endfor %}

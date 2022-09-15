@@ -11,27 +11,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
     <title>Open Gallery | {% block title %}{% endblock %}</title>
-    <link href="{% static 'css/base.css' %}" rel="stylesheet">
-    <script src="{% static 'js/base.js' %}"></script> 
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+    <script src="{% static "js/base.js" %}"></script> 
 
 </head>
 <body>
     <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;">
         <div class="container">
-          <a class="navbar-brand mb-2 me-4" href="{% url 'art-list' %}">Open Gallery</a>
+          <a class="navbar-brand mb-2 me-4" href="{% url "gallery:index" %}">Open Gallery</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 me-4 mb-lg-0">
               <li class="nav-item me-2">
-                <a class="nav-link" href="{% url 'artist-list' %}">작가</a>
+                <a class="nav-link" href="{% url "gallery:artist" %}">작가</a>
               </li>
               <li class="nav-item me-2">
-                <a class="nav-link" href="{% url 'art-list' %}">작품</a>
-              </li>
-              <li class="nav-item me-2">
-                <a class="nav-link" href="{% url 'exbihition-list' %}">전시</a>
+                <a class="nav-link" href="{% url "gallery:art" %}">작품</a>
               </li>
             </ul>
             <form class="row row-cols-sm-auto  me-auto  my-2">
@@ -49,33 +46,32 @@
               </div>
             </form>
             <div class="my-2">
-            {% if user.is_authenticated and not user.is_admin and user.is_artist is None %}
-            <a href="{% url 'apply' %}"><button class="btn btn-outline-danger btn-sm mx-2 px-2">작가 등록 신청하기</button></a>
-            {% endif %}
-            {% if user.is_authenticated %}
+              {% if user.is_authenticated%}
+              {% if state == "미신청" %}
+              <a href="{% url "artist:application" %}"><button class="btn btn-outline-danger btn-sm mx-2 px-2">작가 등록 신청</button></a>
+              {% elif state == "미처리"%}
+              <button class="btn btn-outline-info btn-sm mx-2 px-2" disabled>작가 등록 처리중</button>
+              {% elif state == "반려"%}
+              <button class="btn btn-outline-danger btn-sm mx-2 px-2" disabled>작가 등록 재신청</button>
+              {% endif%}
               <button class="nav-item dropdown btn btn-outline-info btn-sm">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <b>{{ user.username }}님</b>
                 </a>
                 <ul class="dropdown-menu">
                   {% if user.is_admin %}
-                  <li><a class="dropdown-item" href="{% url 'art-list' %}">관리자 페이지</a></li>
+                  <li><a class="dropdown-item" href="{% url "tool:index" %}">관리자 페이지</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  {% else %}
-                  {% if user.is_artist %}
-                  <li><a class="dropdown-item" href="{% url 'art-list' %}">대시보드</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  {% elif user.is_artist is None %}
-                  <li><a class="dropdown-item" href="{% url 'apply' %}">작가 등록 신청</a></li>
+                  {% elif state == "승인"  %}
+                  <li><a class="dropdown-item" href="{% url "artist:info" %}">대시보드</a></li>
                   <li><hr class="dropdown-divider"></li>
                   {% endif %}
-                  {% endif %}
-                  <li><a class="dropdown-item" href="{% url 'logout' %}">로그아웃</a></li>
+                  <li><a class="dropdown-item" onclick="signout()">로그아웃</a></li>
                 </ul>
               </button>
             {% else %}
-              <a href="{% url 'sign-in' %}"><button class="btn btn-outline-info btn-sm mx-2 px-2">로그인</button></a>
-              <a href="{% url 'sign-up' %}"><button class="btn btn-outline-info btn-sm px-2">회원가입 후 작가 등록</button></a>
+              <a href="{% url "artist:signin" %}"><button class="btn btn-outline-info btn-sm mx-2 px-2">로그인</button></a>
+              <a href="{% url "artist:signup" %}"><button class="btn btn-outline-info btn-sm px-2">회원가입 후 작가 등록</button></a>
             {% endif %}
           </div>
         </div>

@@ -8,18 +8,23 @@
 <div class="container mt-4">
     
 <h1 class="mb-4">작가 목록</h1>
-{% for artist in userinfo_list %}
+<div class="row row-cols-4">
+{% for artist in artist_list %}
+<div class="col">
     <div class="card my-3">
         <div class="card-header">
             <h4 class="card-title">{{artist.name}}</h4>
         </div>
         <div class="card-body">
-          <p class="card-text">{{artist.get_gender_display}} / {{artist.birth|timesince}}</p>
-          <p class="card-text">{{artist.email}} / {{artist.phone}}</p>
-          {% comment %} <a href="{% url 'art-list' %}" class="btn btn-outline-info">작품 목록 보기</a> {% endcomment %}
+          <p class="card-text">{{artist.gender}}</p>
+          <p class="card-text">{{artist.age}}세</p>
+          <p class="card-text">{{artist.email}}</p>
+          <p class="card-text">{{artist.phone}}</p>
         </div>
+      </div>
       </div>
 {% endfor %}
 
+</div>
 </div>
 {% endblock %}

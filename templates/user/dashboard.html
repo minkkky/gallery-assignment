@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    대시보드
+{% endblock %}
+
+{% block content %}
+{% load humanize %}
+
+<div class="container mt-4">
+
+<div class="row row-cols-2 mt-4 mx-auto justify-content-md-center">
+    <div class="col">
+        <div class="card my-3">
+            <div class="card-header">
+                <h4 class="card-title">{{artist.name}}</h4>
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{artist.birth}} ({{artist.age}}세 {{artist.gender}})</p>
+              <p class="card-text">{{artist.email}}</p>
+              <p class="card-text">{{artist.phone}}</p>
+            </div>
+          </div>
+    </div>
+  </div>
+  <div class="row col-4 mx-auto gap-2">
+      <a class="btn btn-outline-info" href="{% url "artist:art"%}">작품 등록</a>
+      <a class="btn btn-outline-info" href="{% url "artist:exbihition"%}">전시 등록</a>
+  </div>
+
+<hr/>
+<h5>나의 전시</h5>
+<div class="row row-cols-3">
+{% for ex in exbihition %}
+<div class="col">  
+    <div class="card my-3">
+        <div class="card-header">
+            <h4 class="card-title">{{ex.title}}</h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">전시 기간: {{ex.start}} ~ {{ex.end}}</p>
+          <p class="card-text">전시 작품: {{ex.arts|length}}점</p>
+        </div>
+      </div>
+    </div>
+      {% endfor %}
+  </div>
+
+
+  <hr/>
+<h5>나의 작품</h5>
+<div class="row row-cols-4">
+  {% for a in art %}
+  <div class="col">  
+    <div class="card my-3">
+        <div class="card-header">
+            <h4 class="card-title">{{a.title}}</h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">크기: {{a.size}}호</p>
+          <p class="card-text">가격: {{a.price|intcomma}}원</p>
+        </div>
+      </div>
+      {% endfor %}
+      </div>
+
+</div>
+</div>
+{% endblock %}

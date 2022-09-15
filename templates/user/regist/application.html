@@ -8,7 +8,7 @@
 <div class="row mt-4 mx-auto justify-content-md-center">
     <div class="col-lg-4">
         <h1 class="mb-4">작가 등록 신청</h1>
-        <form method="post" action="/apply/">
+        <form method="post" action="{% url "artist:application" %}">
             {% csrf_token %}
             {% if error %}
                 <div class="alert alert-danger" role="alert">
@@ -29,7 +29,6 @@
 
               <div class="mb-3">
                   <label for="phone" class="form-label">연락처</label>
-                  {% comment %} <input name="phone"  type="text" class="form-control shadow-none" placeholder="010-1234-1234"> {% endcomment %}
                   <div class="input-group mb-3">
                     <input name="phone1" type="text" class="form-control text-center" placeholder="010">
                     <span class="input-group-text">-</span>
@@ -41,13 +40,12 @@
                 
                 <div class="mb-3">
                     <label for="birth" class="form-label">생년월일</label>
-                    {% comment %} <input name="birth"  type="text" class="form-control shadow-none" placeholder="2000-01-01"> {% endcomment %}
                     <div class="input-group mb-3">
-                        <input name="phone1" type="text" class="form-control text-center" placeholder="2002">
+                        <input name="year" type="text" class="form-control text-center" placeholder="2002">
                         <span class="input-group-text">년</span>
-                        <input name="phone2" type="text" class="form-control text-center" placeholder="01">
+                        <input name="month" type="text" class="form-control text-center" placeholder="01">
                         <span class="input-group-text">월</span>
-                        <input name="phone3" type="text" class="form-control text-center" placeholder="01">
+                        <input name="day" type="text" class="form-control text-center" placeholder="01">
                         <span class="input-group-text">일</span>
                     </div>
                 </div>
