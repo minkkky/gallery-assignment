@@ -1,7 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from django.core.validators import RegexValidator
-
 
 class UserManager(BaseUserManager):
     def create_user(self, username, password=None):
@@ -30,7 +28,6 @@ class User(AbstractBaseUser):
     join_date = models.DateTimeField("가입일", auto_now_add=True)
 
     is_active = models.BooleanField(default=True)
-    is_artist = models.BooleanField(default=None, null=True)
     is_admin = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'username'
@@ -50,35 +47,20 @@ class User(AbstractBaseUser):
         return self.is_admin
 
 
-class UserInfo(models.Model):
+class Artist(models.Model):
 
     class Meta:
-        db_table = "userinfos"
+        db_table = "artist"
 
     GENDER_CHOICES = (
         ("F", "여성"),
         ("M", "남성")
     )
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     name = models.CharField("작가 이름", max_length=16)
     gender = models.CharField("성별", max_length=4, choices=GENDER_CHOICES)
     birth = models.DateField("생일")
     email = models.EmailField("이메일", max_length=80, unique = True)
-    phoneNumberRegex = RegexValidator(regex = r"\d{3}?-?\d{4}?-?\d{4}")
-    phone = models.CharField("연락처", validators = [phoneNumberRegex], max_length = 18, unique = True)
+    phone = models.CharField("연락처", max_length = 18, unique = True)
     create_date = models.DateTimeField(auto_now_add=True)
-    
     is_artist = models.BooleanField(default=None, null=True)
-
-
-class ApplyLog(models.Model):
-
-    class Meta:
-        db_table = "approval_log"
-
-    userinfo = models.ForeignKey(UserInfo, on_delete=models.CASCADE)
-    apply_date = models.DateTimeField(auto_now_add=True)
-    examine_date = models.DateField(default=None, null=True)
-
-    is_approval = models.BooleanField(default=None, null=True)
