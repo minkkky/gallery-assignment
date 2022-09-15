@@ -1,53 +1,57 @@
-from django.shortcuts import render
-from django.views import View
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.shortcuts import redirect
+from django.db.models import Q
+
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import permissions, status
+from rest_framework.renderers import TemplateHTMLRenderer
+
 from .models import Art as ArtModel
 from .models import Exbihition as ExbihitionModel
-from user.models import UserInfo as UserInfoModel
+from user.models import Artist as ArtistModel
+from .serializers import ArtSerializer, ExbihitionSerializer
+from user.serializers import ArtistSerializer
+from user.views import stateCheck
 
 
-class ArtListView(ListView):
-    model = ArtModel
-    ordering = '-pk'
-    template_name = 'gallery/arts.html'
+class IndexView(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = "gallery/exbihitions.html"
+    # template_name = "index.html"
 
-
-class ExbihitionListView(ListView):
-    model = ExbihitionModel
-    ordering = 'end'
-    template_name = 'gallery/exbihitions.html'
-
-
-class ArtistListView(ListView):
-    model = UserInfoModel
-    queryset = UserInfoModel.objects.filter(is_artist=True)
-    ordering = '-pk'
-    template_name = 'gallery/artists.html'
-
-
-class SearchResultsView(View):
     def get(self, request):
-        option = self.request.GET.get("s") # 검색 조건
-        query = self.request.GET.get("q") # 검색어
-
-        if option == '1':
-            results = ArtModel.objects.filter(
-                title__icontains=query
-            )
-
-        elif option == '2':
-            results = UserInfoModel.objects.filter(
-                name__icontains=query
-            )
-
-        elif option == '3':
-            results = ExbihitionModel.objects.filter(
-                title__icontains=query
-            )
-
-        return render(results, 'gallery/search-result.html')
+        user_id = request.user.id
+        state = stateCheck(user_id)
+        exbititions = ExbihitionModel.objects.all().order_by("-end")
+        exbitition_serializer = ExbihitionSerializer(exbititions, many=True).data
+        return Response({"state":state, "exbihition_list":exbitition_serializer}, status=status.HTTP_200_OK)
 
 
-class ArtCreateView(CreateView):
-    model = ArtModel
-    fields = ['title', 'price', 'size']
+class ArtView(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = "gallery/arts.html"
+
+    def get(self, request):
+        user_id = request.user.id
+        state = stateCheck(user_id)
+        arts = ArtModel.objects.all().order_by("-pk")
+        serialzer_data = ArtSerializer(arts, many=True).data
+        return Response({"state":state, "art_list":serialzer_data}, status=status.HTTP_200_OK)
+
+
+class ArtistListView(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = "gallery/artists.html"
+
+    def get(self, request):
+        user_id = request.user.id
+        state = stateCheck(user_id)
+        artists = ArtistModel.objects.filter(is_artist=True).order_by("-pk")
+        serialzer_data = ArtistSerializer(artists, many=True).data
+        return Response({"state":state, "artist_list":serialzer_data}, status=status.HTTP_200_OK)
+
+
+class ExbihitionView(APIView):
+
+    def post(self, request):
+        return Response(status=status.HTTP_200_OK)
